@@ -4,14 +4,14 @@
 # -----------------------------------------------------------------------------
 
 provider "profitbricks" {
-  retries  = 100
+  retries = 100
 }
 
 # Create datacenters
 resource "profitbricks_datacenter" "datacenter" {
-  count       = "${length(var.locations)}"
-  name        = "loadtest_${count.index}"
-  location    = "${var.locations[count.index]}"
+  count    = "${length(var.locations)}"
+  name     = "loadtest_${count.index}"
+  location = "${var.locations[count.index]}"
 }
 
 # Create public LANs
@@ -39,14 +39,15 @@ resource "profitbricks_server" "server" {
     disk_type         = "SSD"
     image_password    = "${var.image_password}"
     availability_zone = "AUTO"
-    ssh_key_path      = [ "${var.public_ssh_key_path}" ]
+    ssh_key_path      = ["${var.public_ssh_key_path}"]
   }
 
   nic {
-    name = "public"
-    lan  = "${profitbricks_lan.public_lan.*.id[count.index / length(var.availability_zones)]}"
-    dhcp = true
+    name            = "public"
+    lan             = "${profitbricks_lan.public_lan.*.id[count.index / length(var.availability_zones)]}"
+    dhcp            = true
     firewall_active = true
+
     firewall {
       protocol         = "TCP"
       name             = "SSH"
@@ -65,4 +66,26 @@ resource "profitbricks_firewall" "docker_tls" {
   name             = "Docker TLS"
   port_range_start = 2376
   port_range_end   = 2376
+}
+
+resource "profitbricks_firewall" "docker_tls" {
+  count            = "${length(var.locations) * length(var.availability_zones)}"
+  datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
+  server_id        = "${profitbricks_server.server.*.id[count.index]}"
+  nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
+  protocol         = "TCP"
+  name             = "Locust web master node"
+  port_range_start = 8089
+  port_range_end   = 8089
+}
+
+resource "profitbricks_firewall" "docker_tls" {
+  count            = "${length(var.locations) * length(var.availability_zones)}"
+  datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
+  server_id        = "${profitbricks_server.server.*.id[count.index]}"
+  nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
+  protocol         = "TCP"
+  name             = "Locust master node"
+  port_range_start = 5557
+  port_range_end   = 5558
 }

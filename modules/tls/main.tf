@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 resource "tls_private_key" "ca" {
   algorithm   = "ECDSA"
-  ecdsa_curve = "P521"
+  ecdsa_curve = "P384"
 }
 
 resource "tls_self_signed_cert" "ca" {
@@ -35,7 +35,7 @@ resource "tls_private_key" "server" {
   count = "${var.server_count}"
 
   algorithm   = "ECDSA"
-  ecdsa_curve = "P521"
+  ecdsa_curve = "P384"
 }
 
 resource "tls_cert_request" "server" {
@@ -102,7 +102,7 @@ resource "null_resource" "tls_provisioner" {
 # -----------------------------------------------------------------------------
 resource "tls_private_key" "client" {
   algorithm   = "ECDSA"
-  ecdsa_curve = "P521"
+  ecdsa_curve = "P384"
 }
 
 resource "tls_cert_request" "client" {
