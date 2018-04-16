@@ -68,7 +68,7 @@ resource "profitbricks_firewall" "docker_tls" {
   port_range_end   = 2376
 }
 
-resource "profitbricks_firewall" "docker_tls" {
+resource "profitbricks_firewall" "locust_web" {
   count            = "${length(var.locations) * length(var.availability_zones)}"
   datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
   server_id        = "${profitbricks_server.server.*.id[count.index]}"
@@ -79,7 +79,7 @@ resource "profitbricks_firewall" "docker_tls" {
   port_range_end   = 8089
 }
 
-resource "profitbricks_firewall" "docker_tls" {
+resource "profitbricks_firewall" "locust_master" {
   count            = "${length(var.locations) * length(var.availability_zones)}"
   datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
   server_id        = "${profitbricks_server.server.*.id[count.index]}"
