@@ -46,46 +46,46 @@ resource "profitbricks_server" "server" {
     name            = "public"
     lan             = "${profitbricks_lan.public_lan.*.id[count.index / length(var.availability_zones)]}"
     dhcp            = true
-    firewall_active = true
+    firewall_active = false
 
-    firewall {
-      protocol         = "TCP"
-      name             = "SSH"
-      port_range_start = 22
-      port_range_end   = 22
-    }
+    # firewall {
+    #   protocol         = "TCP"
+    #   name             = "SSH"
+    #   port_range_start = 22
+    #   port_range_end   = 22
+    # }
   }
 }
 
-resource "profitbricks_firewall" "docker_tls" {
-  count            = "${length(var.locations) * length(var.availability_zones)}"
-  datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
-  server_id        = "${profitbricks_server.server.*.id[count.index]}"
-  nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
-  protocol         = "TCP"
-  name             = "Docker TLS"
-  port_range_start = 2376
-  port_range_end   = 2376
-}
+# resource "profitbricks_firewall" "docker_tls" {
+#   count            = "${length(var.locations) * length(var.availability_zones)}"
+#   datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
+#   server_id        = "${profitbricks_server.server.*.id[count.index]}"
+#   nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
+#   protocol         = "TCP"
+#   name             = "Docker TLS"
+#   port_range_start = 2376
+#   port_range_end   = 2376
+# }
 
-resource "profitbricks_firewall" "locust_web" {
-  count            = "${length(var.locations) * length(var.availability_zones)}"
-  datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
-  server_id        = "${profitbricks_server.server.*.id[count.index]}"
-  nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
-  protocol         = "TCP"
-  name             = "Locust web master node"
-  port_range_start = 8089
-  port_range_end   = 8089
-}
+# resource "profitbricks_firewall" "locust_web" {
+#   count            = "${length(var.locations) * length(var.availability_zones)}"
+#   datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
+#   server_id        = "${profitbricks_server.server.*.id[count.index]}"
+#   nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
+#   protocol         = "TCP"
+#   name             = "Locust web master node"
+#   port_range_start = 8089
+#   port_range_end   = 8089
+# }
 
-resource "profitbricks_firewall" "locust_master" {
-  count            = "${length(var.locations) * length(var.availability_zones)}"
-  datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
-  server_id        = "${profitbricks_server.server.*.id[count.index]}"
-  nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
-  protocol         = "TCP"
-  name             = "Locust master node"
-  port_range_start = 5557
-  port_range_end   = 5558
-}
+# resource "profitbricks_firewall" "locust_master" {
+#   count            = "${length(var.locations) * length(var.availability_zones)}"
+#   datacenter_id    = "${profitbricks_datacenter.datacenter.*.id[count.index / length(var.availability_zones)]}"
+#   server_id        = "${profitbricks_server.server.*.id[count.index]}"
+#   nic_id           = "${profitbricks_server.server.*.primary_nic[count.index]}"
+#   protocol         = "TCP"
+#   name             = "Locust master node"
+#   port_range_start = 5557
+#   port_range_end   = 5558
+# }
