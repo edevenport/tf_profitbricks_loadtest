@@ -20,7 +20,7 @@ module "infrastructure" {
   public_ssh_key_path = "${var.public_ssh_key_path}"
 }
 
-module "server_tls" {
+module "setup_tls" {
   source = "./modules/tls"
  
   server_count = "${module.infrastructure.server_count}"
@@ -28,14 +28,7 @@ module "server_tls" {
   private_ssh_key_path = "${var.private_ssh_key_path}"
 }
 
-module "client_tls" {
-  source = "./modules/tls"
-
-  server_ips = "${module.infrastructure.server_ips}"
-  private_ssh_key_path = "${var.private_ssh_key_path}"
-}
-
-module "install-docker" {
+module "install_docker" {
   source = "./modules/docker"
 
   server_count = "${module.infrastructure.server_count}"
