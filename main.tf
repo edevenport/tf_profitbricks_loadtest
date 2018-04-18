@@ -9,36 +9,29 @@ terraform {
 module "infrastructure" {
   source = "./modules/infrastructure"
 
-  locations = "${var.locations}"
+  locations          = "${var.locations}"
   availability_zones = "${var.availability_zones}"
 
-  cores = "${var.cores}"
-  ram = "${var.ram}"
-  image_alias = "${var.image_alias}"
-  image_password = "${var.image_password}"
+  cores                = "${var.cores}"
+  ram                  = "${var.ram}"
+  image_alias          = "${var.image_alias}"
+  image_password       = "${var.image_password}"
   private_ssh_key_path = "${var.private_ssh_key_path}"
-  public_ssh_key_path = "${var.public_ssh_key_path}"
+  public_ssh_key_path  = "${var.public_ssh_key_path}"
 }
 
-module "server_tls" {
-  source = "./modules/tls"
- 
-  server_count = "${module.infrastructure.server_count}"
-  server_ips = "${module.infrastructure.server_ips}"
-  private_ssh_key_path = "${var.private_ssh_key_path}"
-}
-
-module "client_tls" {
+module "setup_tls" {
   source = "./modules/tls"
 
-  server_ips = "${module.infrastructure.server_ips}"
+  server_count         = "${module.infrastructure.server_count}"
+  server_ips           = "${module.infrastructure.server_ips}"
   private_ssh_key_path = "${var.private_ssh_key_path}"
 }
 
-module "install-docker" {
+module "install_docker" {
   source = "./modules/docker"
 
-  server_count = "${module.infrastructure.server_count}"
-  server_ips = "${module.infrastructure.server_ips}"
+  server_count         = "${module.infrastructure.server_count}"
+  server_ips           = "${module.infrastructure.server_ips}"
   private_ssh_key_path = "${var.private_ssh_key_path}"
 }
