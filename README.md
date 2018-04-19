@@ -27,4 +27,12 @@ Initialize and run Terraform:
 
 Docker:
 
-    docker --tlsverify --tlscacert=ca.pem --tlscert=client-cert.pem --tlskey=client-key.pem -H=[IP_ADDRESS]:2376 info
+    docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H=[IP_ADDRESS]:2376 info
+
+Docker TLS authentication can also be set through environment variables.
+
+    export DOCKER_CERT_PATH=$PWD
+    export DOCKER_TLS=1
+    export DOCKER_TLS_VERIFY=1
+
+    docker -H=[IP_ADDRESS]:2376 info
