@@ -138,10 +138,10 @@ resource "local_file" "ca" {
 
 resource "local_file" "client_cert" {
   content =  "${tls_locally_signed_cert.client.cert_pem}"
-  filename = "./client-cert.pem"
+  filename = "./cert.pem"
 }
 
 resource "local_file" "client_key" {
   content = "${tls_private_key.client.private_key_pem}"
-  filename = "./client-key.pem"
+  filename = "./key.pem"
 }
