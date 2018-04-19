@@ -22,7 +22,7 @@ module "infrastructure" {
 
 module "setup_tls" {
   source = "./modules/tls"
-
+ 
   server_count         = "${module.infrastructure.server_count}"
   server_ips           = "${module.infrastructure.server_ips}"
   private_ssh_key_path = "${var.private_ssh_key_path}"
