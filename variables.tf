@@ -36,7 +36,7 @@ variable "image_alias" {
 }
 
 variable "image_password" {
-  type = "string"
+  type    = "string"
   default = ""
 }
 
@@ -45,5 +45,17 @@ variable "private_ssh_key_path" {
 }
 
 variable "public_ssh_key_path" {
+  type = "string"
+}
+
+variable "registry_host" {
+  type = "string"
+}
+
+variable "registry_host_username" {
+  type = "string"
+}
+
+variable "registry_host_password" {
   type = "string"
 }

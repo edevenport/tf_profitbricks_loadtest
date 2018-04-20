@@ -11,16 +11,11 @@ resource "null_resource" "install_docker" {
   }
 
   provisioner "remote-exec" {
-    # inline = [
-    #   "apt-get update && apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common",
-    #   "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
-    #   "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
-    #   "apt-get update && apt-get install -y --no-install-recommends docker-ce"
-    # ]
+    # inline = [  #   "apt-get update && apt-get install -y --no-install-recommends apt-transport-https ca-certificates curl software-properties-common",  #   "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",  #   "add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",  #   "apt-get update && apt-get install -y --no-install-recommends docker-ce"  # ]
 
     inline = [
       "apt-get update && apt-get install -y --no-install-recommends docker.io",
-      "echo 'DOCKER_OPTS=\"-H tcp://0.0.0.0:2376\"' >> /etc/default/docker"
+      "echo 'DOCKER_OPTS=\"-H tcp://0.0.0.0:2376\"' >> /etc/default/docker",
     ]
   }
 
@@ -34,10 +29,18 @@ resource "null_resource" "install_docker" {
     "tlsverify": true
 }
 EOF
+
     destination = "/etc/docker/daemon.json"
   }
 
   provisioner "remote-exec" {
-    inline = [ "systemctl restart docker" ]
+    inline = ["systemctl restart docker"]
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "docker login ${var.registry_host} -u ${var.registry_host_username} -p ${var.registry_host_password}",
+      "docker pull ${var.registry_host}/profitbricks/loadtest",
+    ]
   }
 }
