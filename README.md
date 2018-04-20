@@ -13,6 +13,9 @@ Create a Terraform config file. For example, `main.tf`.
       image_alias = "ubuntu:latest"
       private_ssh_key_path = "/path/to/.ssh/id_rsa"
       public_ssh_key_path = "/path/to/.ssh/id_rsa.pub"
+      registry_host          = "hub.private.com"
+      registry_host_username = "docker_username"
+      registry_host_password = "docker_password"
     }
 
     output "server_ips" {
