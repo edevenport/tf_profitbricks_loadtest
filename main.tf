@@ -38,3 +38,14 @@ module "install_docker" {
   registry_host_username = "${var.registry_host_username}"
   registry_host_password = "${var.registry_host_password}"
 }
+
+module "run_locust" {
+  source = "./modules/locust"
+
+  server_count           = "${module.infrastructure.server_count}"
+  server_ips             = "${module.infrastructure.server_ips}"
+  private_ssh_key_path   = "${var.private_ssh_key_path}"
+  registry_host          = "${var.registry_host}"
+  registry_host_username = "${var.registry_host_username}"
+  registry_host_password = "${var.registry_host_password}"
+}
