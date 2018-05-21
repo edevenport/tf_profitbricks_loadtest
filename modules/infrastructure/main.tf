@@ -3,9 +3,7 @@
 # location.
 # -----------------------------------------------------------------------------
 
-provider "profitbricks" {
-  retries = 100
-}
+provider "profitbricks" {}
 
 # Create datacenters
 resource "profitbricks_datacenter" "datacenter" {
